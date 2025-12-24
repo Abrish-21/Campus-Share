@@ -4,12 +4,12 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"github.com/campus-share/backend/internal/config"
 	"github.com/campus-share/backend/internal/models"
 	"github.com/campus-share/backend/internal/services"
 	"github.com/campus-share/backend/internal/storage"
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 // ResourceHandler handles resource-related HTTP requests
@@ -20,14 +20,12 @@ type ResourceHandler struct {
 
 // NewResourceHandler creates a new resource handler
 func NewResourceHandler(cfg *config.Config) (*ResourceHandler, error) {
-	s3Storage, err := storage.NewS3Storage(&cfg.AWS)
+	localStorage, err := storage.NewLocalStorage(&cfg.Storage)
 	if err != nil {
 		return nil, err
 	}
 
-	// If S3 is not configured, create a service with nil storage
-	// This will cause errors when trying to upload, but allows server to start
-	resourceService := services.NewResourceService(s3Storage)
+	resourceService := services.NewResourceService(localStorage)
 
 	return &ResourceHandler{
 		resourceService: resourceService,
@@ -279,4 +277,3 @@ func (h *ResourceHandler) DownloadResource(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"download_url": url})
 }
-

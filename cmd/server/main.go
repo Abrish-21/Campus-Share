@@ -50,6 +50,9 @@ func main() {
 	router.Use(middleware.ErrorHandler())
 	router.Use(middleware.CORSMiddleware(&cfg.CORS))
 
+	// Serve uploaded files
+	router.Static("/uploads", cfg.Storage.UploadDir)
+
 	// Health check endpoint
 	router.GET("/health", func(c *gin.Context) {
 		c.JSON(200, gin.H{"status": "ok"})
