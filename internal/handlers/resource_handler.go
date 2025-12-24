@@ -20,12 +20,12 @@ type ResourceHandler struct {
 
 // NewResourceHandler creates a new resource handler
 func NewResourceHandler(cfg *config.Config) (*ResourceHandler, error) {
-	s3Storage, err := storage.NewS3Storage(&cfg.AWS)
+	localStorage, err := storage.NewLocalStorage(&cfg.Storage)
 	if err != nil {
 		return nil, err
 	}
 
-	resourceService := services.NewResourceService(s3Storage)
+	resourceService := services.NewResourceService(localStorage)
 
 	return &ResourceHandler{
 		resourceService: resourceService,
