@@ -60,6 +60,14 @@ func (s *AuthService) Register(req RegisterRequest, jwtSecret string, expiration
 		return nil, "", ErrUserExists
 	}
 
+	// Check if student ID already exists (if provided)
+	if req.StudentID != "" {
+		var userWithID models.User
+		if err := database.DB.Where("student_id = ?", req.StudentID).First(&userWithID).Error; err == nil {
+			return nil, "", errors.New("student ID already exists")
+		}
+	}
+
 	// Hash password
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
