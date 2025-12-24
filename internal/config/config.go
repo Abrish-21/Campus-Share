@@ -14,7 +14,7 @@ type Config struct {
 	Server    ServerConfig
 	Database  DatabaseConfig
 	JWT       JWTConfig
-	Storage   StorageConfig
+	AWS       AWSConfig
 	OAuth     OAuthConfig
 	CORS      CORSConfig
 	Upload    UploadConfig
@@ -44,10 +44,13 @@ type JWTConfig struct {
 	ExpirationHours int
 }
 
-// StorageConfig holds storage-related configuration
-type StorageConfig struct {
-	UploadDir string
-	BaseURL   string
+// AWSConfig holds AWS S3-related configuration
+type AWSConfig struct {
+	AccessKeyID     string
+	SecretAccessKey string
+	Region          string
+	BucketName      string
+	Endpoint        string // For MinIO or custom S3-compatible services
 }
 
 // OAuthConfig holds OAuth-related configuration
@@ -99,9 +102,12 @@ func Load() (*Config, error) {
 			Secret:          getEnv("JWT_SECRET", "change-this-secret-key"),
 			ExpirationHours: getEnvAsInt("JWT_EXPIRATION_HOURS", 24),
 		},
-		Storage: StorageConfig{
-			UploadDir: getEnv("UPLOAD_DIR", "uploads"),
-			BaseURL:   getEnv("BASE_URL", "http://localhost:8080"),
+		AWS: AWSConfig{
+			AccessKeyID:     getEnv("AWS_ACCESS_KEY_ID", ""),
+			SecretAccessKey: getEnv("AWS_SECRET_ACCESS_KEY", ""),
+			Region:          getEnv("AWS_REGION", "us-east-1"),
+			BucketName:      getEnv("S3_BUCKET_NAME", ""),
+			Endpoint:        getEnv("S3_ENDPOINT", ""),
 		},
 		OAuth: OAuthConfig{
 			GoogleClientID:     getEnv("GOOGLE_CLIENT_ID", ""),
