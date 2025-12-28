@@ -54,3 +54,5 @@ temp/
 
 main
 server
+node_modules/
+
