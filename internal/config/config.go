@@ -121,7 +121,7 @@ func Load() (*Config, error) {
 		},
 		Upload: UploadConfig{
 			MaxFileSizeMB:    getEnvAsInt("MAX_FILE_SIZE_MB", 100),
-			AllowedFileTypes: getEnvAsSlice("ALLOWED_FILE_TYPES", []string{"pdf", "doc", "docx", "ppt", "pptx", "xls", "xlsx", "jpg", "jpeg", "png", "gif", "mp4", "avi"}),
+			AllowedFileTypes: getEnvAsSlice("ALLOWED_FILE_TYPES", []string{"pdf", "doc", "docx", "ppt", "pptx", "xls", "xlsx", "jpg", "jpeg", "png", "gif", "mp4", "avi", "txt"}),
 		},
 		RateLimit: RateLimitConfig{
 			Requests: getEnvAsInt("RATE_LIMIT_REQUESTS", 100),

@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"net/http"
 	"strconv"
 
@@ -51,6 +52,7 @@ func (h *ResourceHandler) CreateResource(c *gin.Context) {
 	// Get file from form
 	file, err := c.FormFile("file")
 	if err != nil {
+		println("Error getting file:", err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"error": "file is required"})
 		return
 	}
@@ -95,6 +97,7 @@ func (h *ResourceHandler) CreateResource(c *gin.Context) {
 		h.config.Upload.AllowedFileTypes,
 	)
 	if err != nil {
+		println("Error creating resource:", err.Error())
 		if err == services.ErrFileTooLarge || err == services.ErrInvalidFileType {
 			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			return
@@ -111,7 +114,15 @@ func (h *ResourceHandler) CreateResource(c *gin.Context) {
 			"user_id":     resource.UserID,
 			"created_at":  resource.CreatedAt,
 		}
-		if err := events.PublishEvent(c.Request.Context(), "resource.created", eventData); err != nil {
+
+		// Marshal to JSON
+		jsonData, err := json.Marshal(eventData)
+		if err != nil {
+			println("Failed to marshal event data:", err.Error())
+			return
+		}
+
+		if err := events.PublishEvent(c.Request.Context(), "resource.created", jsonData); err != nil {
 			// Log error but don't fail request
 			// In a real app use a logger
 			println("Failed to publish event:", err.Error())

@@ -33,7 +33,7 @@ func main() {
 	// Connect to Redis
 	if err := events.InitRedis(cfg); err != nil {
 		log.Printf("Failed to connect to Redis: %v", err)
-		// We don't fatal here to allow running without Redis in dev if needed, 
+		// We don't fatal here to allow running without Redis in dev if needed,
 		// but for this project we want it to work.
 	}
 
