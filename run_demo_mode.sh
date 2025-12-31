@@ -4,7 +4,14 @@ BLUE='\033[0;34m'
 NC='\033[0m'
 
 echo -e "${BLUE}Starting Campus-Share Environment...${NC}"
-docker-compose up -d
+
+# Try docker-compose (V1), fallback to docker compose (V2)
+if command -v docker-compose &> /dev/null; then
+    docker-compose up -d
+else
+    echo "Using 'docker compose' (V2)..."
+    docker compose up -d
+fi
 
 echo -e "${GREEN}Services are running!${NC}"
 echo -e "API: http://localhost:8080"
