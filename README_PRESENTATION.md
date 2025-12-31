@@ -1,6 +1,4 @@
-# 🎓 Campus-Share Presentation Guide
 
-This guide will help you set up and run the Campus-Share demo on a new machine (e.g., a friend's PC).
 
 ## 📋 Prerequisites
 
@@ -29,10 +27,14 @@ Before you begin, ensure the target PC has:
 You will need **two terminal windows**.
 
 ### Terminal 1: The "Mission Control" (Visuals)
-Run the main start script. This spins up the backend and launches the visualization dashboard.
+**For Linux/Mac:**
 ```bash
 ./run_demo_mode.sh
 ```
+
+**For Windows:**
+Double-click `run_demo_mode.bat`.
+
 *You should see a blank screen waiting for events.*
 
 ### Terminal 2: The "Action" (Trigger)

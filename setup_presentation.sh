@@ -41,9 +41,16 @@ echo -e "✅ Docker images built successfully."
 # 3. Build Dashboard Tool
 echo -e "\n${GREEN}[3/4] Setting up Mission Control Dashboard...${NC}"
 if [ "$HAS_GO" = true ]; then
+    # Build for Linux (Current Machine)
+    echo "   Building for Linux..."
     go build -o dashboard cmd/dashboard/main.go
+    
+    # Build for Windows (Friend's Machine)
+    echo "   Building for Windows (dashboard.exe)..."
+    GOOS=windows GOARCH=amd64 go build -o dashboard.exe cmd/dashboard/main.go
+    
     if [ $? -eq 0 ]; then
-        echo -e "✅ Dashboard compiled successfully."
+        echo -e "✅ Dashboard compiled successfully (Linux & Windows)."
     else
         echo -e "${RED}❌ Dashboard compilation failed.${NC}"
     fi
